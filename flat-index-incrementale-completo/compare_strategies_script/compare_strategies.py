@@ -43,41 +43,70 @@ def plot_group_distributions(original, incremental, k):
     plt.tight_layout()
     plt.savefig("comparison_partitioning.png")
 
+def plot_full_vs_incremental(full_partition_stats, incremental_partition_stats, k):
+    fig, ax = plt.subplots(figsize=(8, 4))
+
+    # Qui abbiamo la distribuzione gruppi per la partizione full su 495
+    full_sizes = full_partition_stats["group_sizes"]
+    # Qui abbiamo la distribuzione gruppi per la partizione incremental combinata (300 + 195)
+    incremental_sizes = incremental_partition_stats["group_sizes"]
+
+    ax.hist([full_sizes, incremental_sizes],
+            bins=[k-0.5, k+0.5, k+1.5],
+            label=["k_flat full 495", "incremental_k_flat 300+195"],
+            rwidth=0.8)
+    ax.set_xticks([k, k+1])
+    ax.set_xlabel("Cardinalità dei gruppi")
+    ax.set_ylabel("Numero di gruppi")
+    ax.set_title("Confronto distribuzione gruppi: full vs incremental")
+    ax.legend()
+    plt.tight_layout()
+    plt.savefig("comparison_full_vs_incremental.png")
+
 
 def main():
-    k = 4
-    full_data = simulate_dataset(1000)
-    initial_data = full_data[:600]
-    new_data = full_data[600:]
+    import time
 
-    # Partizione completa
-    start_full = time.time()
-    p_full = k_flat(full_data, k)
-    end_full = time.time()
+    k = 11
+    full_data = simulate_dataset(495)      # Dataset completo da 495 record
+    initial_data = full_data[:300]         # Dati iniziali (300)
+    new_data = full_data[300:]             # Nuovi dati (195)
 
-    # Partizione incrementale
-    start_inc = time.time()
+    # Partizione iniziale su 300 record
+    start_init = time.time()
     p_init = k_flat(initial_data, k)
-    p_inc = incremental_k_flat(new_data, p_init, k)
+    end_init = time.time()
+    p_full = k_flat(full_data, k)
+
+    # Partizione incrementale: partiziona solo i nuovi 195 dati
+    # poi unisce le partizioni vecchie e nuove
+    start_inc = time.time()
+    new_partitions = incremental_k_flat(new_data, [], k)  # partizione solo sui nuovi 195
+    p_inc = p_init + new_partitions                         # unione delle partizioni
     end_inc = time.time()
 
-    # Statistiche
-    stats_full = partition_stats(p_full, k)
+    # Statistiche sulle due partizioni: iniziale (300) vs incrementale completa (300+195)
+    stats_init = partition_stats(p_init, k)
     stats_inc = partition_stats(p_inc, k)
+    stats_full =partition_stats(p_full, k)
 
-    print("\n=== Risultati k_flat ===")
-    for key, value in stats_full.items():
+    print("\n=== Risultati partizione iniziale su 300 record ===")
+    for key, value in stats_init.items():
         print(f"{key}: {value}")
-    print(f"Tempo: {end_full - start_full:.4f} s")
+    print(f"Tempo: {end_init - start_init:.4f} s")
 
-    print("\n=== Risultati incremental_k_flat ===")
+    print("\n=== Risultati partizione incrementale su 495 record (300+195) ===")
     for key, value in stats_inc.items():
         print(f"{key}: {value}")
     print(f"Tempo: {end_inc - start_inc:.4f} s")
 
-    # Grafico comparativo
-    plot_group_distributions(stats_full, stats_inc, k)
+    # Grafico comparativo tra la partizione iniziale e quella incrementale
+    plot_group_distributions(stats_init, stats_inc, k)
     print("\nGrafico salvato in comparison_partitioning.png")
+
+    # Grafico: confronto tra full e incrementale (495 vs 300+195)
+    plot_full_vs_incremental(stats_full, stats_inc, k)
+    print("\nGrafico confronto full vs incremental salvato in comparison_full_vs_incremental.png")
 
 
 if __name__ == "__main__":
