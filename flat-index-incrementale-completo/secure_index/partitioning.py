@@ -74,3 +74,66 @@ def incremental_k_flat(new_records, existing_partitions, k):
             raise ValueError(f"Gruppo {i} ha dimensione invalida: {len(group)} (attesi k={k} o k+1={k+1})")
 
     return updated
+
+import math
+
+def compute_delta(partitions, k):
+    """
+    Calcola il livello di appiattimento δ = h/p,
+    dove h = gruppi di cardinalità k+1 e p = gruppi totali.
+    """
+    p = len(partitions)
+    if p == 0:
+        return 0.0
+    h = sum(1 for g in partitions if len(g) == k + 1)
+    return h / p
+
+def compute_cost(n, k, c=1.0):
+    """
+    Funzione di costo: C(n) = c * n * log(n/k).
+    """
+    if n <= 0 or k <= 0:
+        return 0.0
+    return c * n * math.log(n / k)
+
+def incremental_partition(r, n, k, lam, c=1.0):
+    """
+    Procedura incrementale: decide se applicare partizione totale o parziale
+    in base al parametro di bilanciamento λ.
+
+    Args:
+        r (list): dataset precedente (già partizionato).
+        n (list): nuove tuple.
+        k (int): parametro k della partizione.
+        lam (float): parametro di bilanciamento λ ∈ [0,1].
+        c (float): costo elementare (default=1.0).
+
+    Returns:
+        tuple: (partizione risultante, tipo_scelto)
+    """
+    # Dataset totale
+    r_tot = r + n
+
+    # --- Partizione totale ---
+    P_tot = k_flat(r_tot, k)
+    delta_tot = compute_delta(P_tot, k)
+
+    # --- Partizione parziale ---
+    P_old = k_flat(r, k)
+    P_new = incremental_k_flat(n, [], k)
+    P_parz = P_old + P_new
+    delta_parz = compute_delta(P_parz, k)
+
+    # --- Calcolo costi ---
+    C_tot = compute_cost(len(r_tot), k, c)
+    C_parz = compute_cost(len(n), k, c)
+
+    # --- Regola decisionale ---
+    tau = lam * (C_parz / C_tot) if C_tot > 0 else float("inf")
+    delta_diff = delta_parz - delta_tot
+
+    if delta_diff <= tau:
+        return P_parz, "parziale"
+    else:
+        return P_tot, "totale"
+
