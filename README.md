@@ -36,7 +36,7 @@ Sono inclusi test per:
 
 File: `test_incremental_partitioning.py`
   
-**Come eseguire i test**
+## Come eseguire i test
 Assicurati di avere installato Python 3.8+ e pytest.
 
 Installa le dipendenze:
@@ -47,11 +47,11 @@ pytest incremental-version/test/test_incremental_partitioning.py -v
 Oppure usa lo script:
 ./run_tests.bat
 
-**Come eseguire il confronto visuale**
+## Come eseguire il confronto visuale
 Usa il file run_visual.bat per generare il grafico comparison_partitioning.png, che mostra le differenze tra il partizionamento classico e incrementale:
 ./run_visual.bat
 
-**Esempio di utilizzo con λ**
+## Esempio di utilizzo con λ
 Esempio di esecuzione della strategia decisionale con λ:
 from secure_index.partitioning import incremental_partition
 
@@ -72,16 +72,16 @@ Strategia scelta: parziale
 [7, 8, 9, 10]
 [11, 12, 13, 14]
 
-**Requisiti**
+## Requisiti
 Python 3.8+
 matplotlib
 pytest
 pandas
 
-**Licenza**
+## Licenza
 Questo progetto è distribuito sotto licenza MIT. Puoi usarlo, modificarlo e condividerlo liberamente.
 
-**Autrice**
+## Autrice
 Rossella – Università degli Studi del Molise
 Tesi triennale
 Basato sul progetto originale: GitHub – flat-index
