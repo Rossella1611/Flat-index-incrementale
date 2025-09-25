@@ -55,8 +55,8 @@ Usa il file run_visual.bat per generare il grafico comparison_partitioning.png, 
 Esempio di esecuzione della strategia decisionale con λ:
 from secure_index.partitioning import incremental_partition
 
-r = list(range(1, 11))     # dataset iniziale
-n = list(range(11, 15))    # nuovi record
+r = list(range[1, 10])     # dataset iniziale
+n = list(range[11, 14])    # nuovi record
 k = 3
 lam = 0.5                  # compromesso tra qualità e costo
 
