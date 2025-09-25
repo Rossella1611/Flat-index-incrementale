@@ -27,11 +27,16 @@ Questa versione introduce una nuova logica di partizionamento incrementale dei d
 - run_visual.bat # Generazione grafici
 
 ##  Test automatizzati
+## 1. Test automatizzati
+
 Sono inclusi test per:
+
 - `incremental_k_flat`: verifica che i gruppi abbiano sempre cardinalità *k* o *k+1*.  
 - `incremental_partition`: verifica la scelta corretta della strategia decisionale in base a `λ`.  
 
-Esempio di test (`test_incremental_partitioning.py`):
+### Esempio di test
+
+File: `test_incremental_partitioning.py`
 
 ```python
 def test_incremental_partition_lambda_low():
@@ -42,23 +47,19 @@ def test_incremental_partition_lambda_low():
     lam = 0.0
     partition, strategy = incremental_partition(r, n, k, lam)
     assert strategy == "totale"
-
 Come eseguire i test
 Assicurati di avere installato Python 3.8+ e pytest.
+Installa le dipendenze:
 
-Installa le dipendenze con:
 pip install -r requirements.txt
-
-Poi esegui i test con:
+Esegui i test:
 pytest incremental-version/test/test_incremental_partitioning.py -v
-oppure usa lo script
+Oppure usa lo script:
 ./run_tests.bat
-
 Come eseguire il confronto visuale
-Usa il file run_visual.bat per generare il grafico comparison_partitioning.png che mostra le differenze tra il partizionamento classico e incrementale.
+Usa il file run_visual.bat per generare il grafico comparison_partitioning.png, che mostra le differenze tra il partizionamento classico e incrementale:
 ./run_visual.bat
-
-## Esempio di utilizzo con λ
+ Esempio di utilizzo con λ
 Esempio di esecuzione della strategia decisionale con λ:
 from secure_index.partitioning import incremental_partition
 
@@ -72,25 +73,20 @@ partition, strategy = incremental_partition(r, n, k, lam)
 print(f"Strategia scelta: {strategy}")
 for group in partition:
     print(group)
-
 Output atteso:
 Strategia scelta: parziale
 [1, 2, 3]
 [4, 5, 6]
 [7, 8, 9, 10]
 [11, 12, 13, 14]
-
  Requisiti
-- Python 3.8+
-- matplotlib
-- pytest
-- pandas
-
-Licenza
+Python 3.8+
+matplotlib
+pytest
+pandas
+ Licenza
 Questo progetto è distribuito sotto licenza MIT. Puoi usarlo, modificarlo e condividerlo liberamente.
-
-Autrice
+ Autrice
 Rossella – Università degli Studi del Molise
 Tesi triennale
-Basato sul progetto originale: https://github.com/unibg-seclab/flat-index
-
+Basato sul progetto originale: GitHub – flat-index
