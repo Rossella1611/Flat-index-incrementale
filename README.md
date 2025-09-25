@@ -31,7 +31,7 @@ Sono inclusi test per:
 - `incremental_k_flat`: verifica che i gruppi abbiano sempre cardinalità *k* o *k+1*.  
 - `incremental_partition`: verifica la scelta corretta della strategia decisionale in base a `λ`.  
 
-###Esempio di test (`test_incremental_partitioning.py`):
+Esempio di test (`test_incremental_partitioning.py`):
 
 ```python
 def test_incremental_partition_lambda_low():
