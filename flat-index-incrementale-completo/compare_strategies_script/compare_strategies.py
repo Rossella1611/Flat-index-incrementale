@@ -108,6 +108,16 @@ def main():
     plot_full_vs_incremental(stats_full, stats_inc, k)
     print("\nGrafico confronto full vs incremental salvato in comparison_full_vs_incremental.png")
 
+# Strategia decisionale con λ
+    lam = 0.5
+    chosen_partition, strategy = incremental_partition(initial_data, new_data, k, lam)
+
+    print(f"\n=== Strategia decisionale con λ={lam} ===")
+    print(f"Scelta: {strategy}")
+    stats_chosen = partition_stats(chosen_partition, k)
+    for key, value in stats_chosen.items():
+        print(f"{key}: {value}")
+
 
 if __name__ == "__main__":
     main()
