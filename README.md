@@ -35,17 +35,7 @@ Sono inclusi test per:
 ### Esempio di test
 
 File: `test_incremental_partitioning.py`
-
-```python
-def test_incremental_partition_lambda_low():
-    """Con lambda basso, ci si aspetta una partizione totale."""
-    r = list(range(1, 11))      # dataset iniziale
-    n = list(range(11, 15))     # nuovi record
-    k = 3
-    lam = 0.0
-    partition, strategy = incremental_partition(r, n, k, lam)
-    assert strategy == "totale"
-
+  
 **Come eseguire i test**
 Assicurati di avere installato Python 3.8+ e pytest.
 
