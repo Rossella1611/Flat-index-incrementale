@@ -5,7 +5,7 @@ compare_strategies.py
 Questo script confronta il comportamento dell'approccio originale (k_flat) e della variante incrementale (incremental_k_flat).
 Utile per supportare il Capitolo 7 della tesi: confronto tra partizionamento statico e dinamico.
 """
-from secure_index.partitioning import k_flat, incremental_k_flat
+from secure_index.partitioning import k_flat, incremental_k_flat, incremental_partition
 import matplotlib.pyplot as plt
 import time
 
