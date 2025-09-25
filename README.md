@@ -42,7 +42,6 @@ def test_incremental_partition_lambda_low():
     lam = 0.0
     partition, strategy = incremental_partition(r, n, k, lam)
     assert strategy == "totale"
-
 ## Come eseguire i test
 Assicurati di avere installato Python 3.8+ e pytest.
 
@@ -58,7 +57,7 @@ Come eseguire il confronto visuale
 Usa il file run_visual.bat per generare il grafico comparison_partitioning.png che mostra le differenze tra il partizionamento classico e incrementale.
 ./run_visual.bat
 
-## Esempio di utilizzo con λ
+### Esempio di utilizzo con λ
 Esempio di esecuzione della strategia decisionale con λ:
 from secure_index.partitioning import incremental_partition
 
